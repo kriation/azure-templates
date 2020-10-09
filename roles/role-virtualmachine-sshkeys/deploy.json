@@ -1,0 +1,87 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "roleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the role definition"
+      },
+      "defaultValue": "Virtual Machine Contributor (with sshPublicKeys)"
+    },
+    "roleDescription": {
+      "type": "string",
+      "metadata": {
+        "description": "Description of the role definition"
+      },
+      "defaultValue": "This role provides all actions defined in Virtual Machine Contributor in addition to actions supporting the generation, read, and write of sshKeys. It explicitly denies the delete action of ssh keys"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().subscriptionId)]",
+      "properties": {
+        "roleName": "[parameters('roleName')]",
+        "description": "[parameters('roleDescription')]",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+							"Microsoft.Authorization/*/read",
+							"Microsoft.Compute/availabilitySets/*",
+							"Microsoft.Compute/locations/*",
+							"Microsoft.Compute/virtualMachines/*",
+							"Microsoft.Compute/virtualMachineScaleSets/*",
+							"Microsoft.Compute/disks/write",
+							"Microsoft.Compute/disks/read",
+							"Microsoft.Compute/disks/delete",
+							"Microsoft.DevTestLab/schedules/*",
+							"Microsoft.Insights/alertRules/*",
+							"Microsoft.Network/applicationGateways/backendAddressPools/join/action",
+							"Microsoft.Network/loadBalancers/backendAddressPools/join/action",
+							"Microsoft.Network/loadBalancers/inboundNatPools/join/action",
+							"Microsoft.Network/loadBalancers/inboundNatRules/join/action",
+							"Microsoft.Network/loadBalancers/probes/join/action",
+							"Microsoft.Network/loadBalancers/read",
+							"Microsoft.Network/locations/*",
+							"Microsoft.Network/networkInterfaces/*",
+							"Microsoft.Network/networkSecurityGroups/join/action",
+							"Microsoft.Network/networkSecurityGroups/read",
+							"Microsoft.Network/publicIPAddresses/join/action",
+							"Microsoft.Network/publicIPAddresses/read",
+							"Microsoft.Network/virtualNetworks/read",
+							"Microsoft.Network/virtualNetworks/subnets/join/action",
+							"Microsoft.RecoveryServices/locations/*",
+							"Microsoft.RecoveryServices/Vaults/backupFabrics/backupProtectionIntent/write",
+							"Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/*/read",
+							"Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/read",
+							"Microsoft.RecoveryServices/Vaults/backupFabrics/protectionContainers/protectedItems/write",
+							"Microsoft.RecoveryServices/Vaults/backupPolicies/read",
+							"Microsoft.RecoveryServices/Vaults/backupPolicies/write",
+							"Microsoft.RecoveryServices/Vaults/read",
+							"Microsoft.RecoveryServices/Vaults/usages/read",
+							"Microsoft.RecoveryServices/Vaults/write",
+							"Microsoft.ResourceHealth/availabilityStatuses/read",
+							"Microsoft.Resources/deployments/*",
+							"Microsoft.Resources/subscriptions/resourceGroups/read",
+							"Microsoft.SqlVirtualMachine/*",
+							"Microsoft.Storage/storageAccounts/listKeys/action",
+							"Microsoft.Storage/storageAccounts/read",
+							"Microsoft.Support/*",
+							"Microsoft.Compute/sshPublicKeys/*"
+            ],
+            "notActions": [
+              "Microsoft.Compute/sshPublicKeys/delete"
+            ]
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    }
+  ]
+}
