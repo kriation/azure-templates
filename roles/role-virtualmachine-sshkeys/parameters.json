@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "roleName": {
+      "value": "Virtual Machine Contributor (with sshPublicKeys)"
+    },
+    "roleDescription": {
+      "value": "This role provides all actions defined in Virtual Machine Contributor in addition to actions supporting the generation, read, and write of sshKeys. It explicitly denies the delete action of ssh keys"
+    }
+  }
+}
