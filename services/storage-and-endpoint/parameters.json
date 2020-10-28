@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountName": {
+            "value": ""
+        },
+        "fileShareName": {
+            "value": ""
+        },
+        "privateEndpointName": {
+            "value": ""
+        },
+        "virtualNetworkName": {
+            "value": ""
+        },
+        "virtualNetworkAddressSpace": {
+            "value": ""
+        },
+        "subnetName": {
+            "value": ""
+        },
+        "subnetAddressSpace": {
+            "value": ""
+        }
+    }
+}
+
