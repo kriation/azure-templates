@@ -4,24 +4,27 @@
   "parameters": {
     "storageAccountName": {
       "type": "string",
+      "minLength": 3,
+      "maxLength": 24,
       "defaultValue": "[concat('storage', uniqueString(resourceGroup().id))]",
       "metadata": {
-        "description": "Specifies the name of the Azure Storage account."
+        "description": "Specifies the name of the Azure Storage account"
       }
     },
     "fileShareName": {
       "type": "string",
       "minLength": 3,
       "maxLength": 63,
+      "defaultValue": "[concat('fileshare-', uniqueString(resourceGroup().id))]",
       "metadata": {
-        "description": "Specifies the name of the File Share. File share names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only."
+        "description": "Specifies the name of the File Share"
       }
     },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
       "metadata": {
-        "description": "Specifies the location in which the Azure Storage resources should be deployed."
+        "description": "Specifies the location in which the Azure Storage resources should be deployed. Use 'az account list-locations --query [].name' to find the list of locations that are available to you"
       }
     },
     "fileshareProtocol": {
@@ -34,26 +37,35 @@
     },
     "privateEndpointName": {
       "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "defaultValue": "[concat('endpoint-', uniqueString(resourceGroup().id))]",
       "metadata": {
-        "description": "Name of the private endpoint against the storage account"
+        "description": "Specifies the namne of the private endpoint against the storage account"
       }
     },
     "virtualNetworkName": {
       "type": "string",
+      "minLength": 2,
+      "maxLength": 64,
+      "defaultValue": "[concat('vnet-', uniqueString(resourceGroup().id))]",
       "metadata": {
-        "description": "The name of the virtual network that the private endpoint will exist in"
+        "description": "Specifies the name of the virtual network that the endpoint will exist in"
       }
     },
     "virtualNetworkAddressSpace": {
       "type": "string",
       "metadata": {
-        "description": "Address prefixes for the virtual network"
+        "description": "Address prefix for the virtual network"
       }
     },
     "subnetName": {
       "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "defaultValue": "[concat('subnet-', uniqueString(resourceGroup().id))]",
       "metadata": {
-        "description": "The name of the subnet in the virtual network"
+        "description": "Specifies the name of the subnet that the endpoint will exist in"
       }
     },
     "subnetAddressSpace": {
