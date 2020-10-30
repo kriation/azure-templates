@@ -179,10 +179,10 @@
           "name": "[concat('privatelink.file.core.windows.net','/',parameters('privateEndpointName'),'-link')]",
           "location": "global",
           "properties": {
+            "registrationEnabled": false,
             "virtualNetwork": {
               "id": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
-            },
-            "registrationEnabled": false
+            }
           },
           "dependsOn": [
             "[resourceId('Microsoft.Network/privateDnsZones', 'privatelink.file.core.windows.net')]",
