@@ -1,0 +1,33 @@
+{
+    "parameters": {},
+    "policyRule": {
+        "if": {
+            "AnyOf": [
+                {
+                    "field": "type",
+                    "contains": "Microsoft.Kubernetes"
+                },
+                {
+                    "field": "type",
+                    "equals": "Microsoft.ContainerService/managedClusters"
+                },
+                {
+                    "field": "type",
+                    "contains": "Microsoft.CognitiveServices"
+                },
+                {
+                    "field": "type",
+                    "contains": "Microsoft.ServiceFabric"
+                },
+                {
+                    "field": "type",
+                    "contains": "Microsoft.Network"
+                }
+            ]
+        },
+        "then": {
+            "effect": "deny"
+        }
+    }
+}
+
