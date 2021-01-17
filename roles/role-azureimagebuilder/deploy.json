@@ -1,0 +1,75 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "aibIdentityName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of Azure Image Builder User Managed Identity"
+      },
+      "defaultValue": "umi-aib"
+    },
+    "roleName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the role"
+      },
+      "defaultValue": "Azure Image Builder Service Image Creation Role"
+    },
+    "roleDescription": {
+      "type": "string",
+      "metadata": {
+        "description": "Description of the role definition"
+      },
+      "defaultValue": "This role provides all necessary permissions to manage machine images by the Azure Image Builder service."
+    }
+  },
+  "variables": {
+    "resourceLocation": "[resourceGroup().location]",
+    "roleDefinitionId": "[guid(subscription().subscriptionId,parameters('roleName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2018-11-30",
+      "name": "[parameters('aibIdentityName')]",
+      "location": "[variables('resourceLocation')]"
+    },
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('roleDefinitionId')]",
+      "properties": {
+	      "roleName": "[parameters('roleName')]",
+	      "description": "[parameters('roleDescription')]",
+	      "permissions": [
+	        {
+	          "actions": [
+	            "Microsoft.Compute/galleries/read",
+	            "Microsoft.Compute/galleries/images/read",
+	            "Microsoft.Compute/galleries/images/versions/read",
+	            "Microsoft.Compute/galleries/images/versions/write",
+	            "Microsoft.Compute/images/write",
+	            "Microsoft.Compute/images/read",
+	            "Microsoft.Compute/images/delete"
+	          ],
+	          "notActions": []
+	        }
+	      ],
+        "assignableScopes": [
+          "[resourceGroup().id]"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[guid(subscription().subscriptionId,variables('roleDefinitionId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('roleDefinitionId'))]",
+        "principalId":
+        "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',parameters('aibIdentityName'))).principalId]"
+      }
+    }
+  ]
+}
