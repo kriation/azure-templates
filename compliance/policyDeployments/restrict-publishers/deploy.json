@@ -1,0 +1,62 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"policyDefinitionName": {
+			"type": "string",
+			"metadata": {
+				"description": "Abbreviated name of the policy definition"
+			},
+			"defaultValue": "restrict-publishers"
+		},
+		"policyDisplayName": {
+			"type": "string",
+			"metadata": {
+				"description": "Full description of the policy definition"
+			},
+			"defaultValue": "Restrict publishers for marketplace images"
+		},
+		"allowedPublishers": {
+			"type": "Array",
+			"metadata": {
+				"description": "The list of publishers that this policy restricts to"
+			},
+			"defaultValue": [ "Microsoft" ]
+		}
+	},
+	"resources": [
+		{
+			"type": "Microsoft.Authorization/policyDefinitions",
+			"apiVersion": "2020-03-01",
+			"name": "[parameters('policyDefinitionName')]",
+			"properties": {
+				"policyType": "Custom",
+				"displayName": "[parameters('policyDisplayName')]",
+				"policyRule": {
+					"if": {
+						"allOf": [
+							{
+								"field": "type",
+								"in": [
+									"Microsoft.Compute/disks",
+									"Microsoft.Compute/virtualMachines",
+									"Microsoft.Compute/VirtualMachineScaleSets"
+								]
+							},
+							{
+								"not": {
+									"field": "Microsoft.Compute/imagePublisher",
+									"in": "[parameters('allowedPublishers')]"
+								}
+							}
+						]
+					},
+					"then": {
+						"effect": "deny"
+					}
+				}
+			}
+		}
+	]
+}
+
