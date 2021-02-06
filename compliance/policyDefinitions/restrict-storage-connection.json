@@ -1,0 +1,31 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Storage/storageAccounts"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
+              "notEquals": "Deny"
+            },
+            {
+              "count": {
+                "field": "Microsoft.Storage/storageAccounts/networkAcls.virtualNetworkRules[*]"
+              },
+              "notEquals": 0
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  },
+  "parameters": {}
+}

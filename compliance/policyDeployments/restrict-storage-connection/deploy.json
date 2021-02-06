@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyDefinitionName": {
+      "type": "string",
+      "metadata": {
+        "description": "Abbreviated name of the policy definition"
+      },
+      "defaultValue": "restrict-storage-connection"
+    },
+    "policyDisplayName": {
+      "type": "string",
+      "metadata": {
+        "description": "Full description of the policy definition"
+      },
+      "defaultValue": "Restrict storage account to private endpoint connection only"
+    }
+  },
+  "resources": [{
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2020-03-01",
+      "name": "[parameters('policyDefinitionName')]",
+      "properties": {
+        "policyType": "Custom",
+        "displayName": "[parameters('policyDisplayName')]",
+				"policyRule": {
+				    "if": {
+				      "allOf": [
+				        {
+				          "field": "type",
+				          "equals": "Microsoft.Storage/storageAccounts"
+				        },
+				        {
+				          "anyOf": [
+				            {
+				              "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
+				              "notEquals": "Deny"
+				            },
+				            {
+				              "count": {
+				                "field": "Microsoft.Storage/storageAccounts/networkAcls.virtualNetworkRules[*]"
+				              },
+				              "notEquals": 0
+				            }
+				          ]
+				        }
+				      ]
+				    },
+				    "then": {
+				      "effect": "deny"
+				    }
+				}
+			}
+	}]
+}
+
