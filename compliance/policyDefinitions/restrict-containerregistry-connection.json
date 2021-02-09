@@ -1,0 +1,25 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.ContainerRegistry/registries"
+        },
+        {
+          "field": "Microsoft.ContainerRegistry/registries/sku.name",
+          "notEquals": "Premium"
+        },
+        {
+          "field": "Microsoft.ContainerRegistry/registries/networkRuleSet.defaultAction",
+          "exists": "False"
+        }
+      ]
+    },
+    "then": {
+      "effect": "deny"
+    }
+  },
+  "parameters": {}
+}
