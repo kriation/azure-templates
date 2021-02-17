@@ -11,8 +11,8 @@
           "count": {
             "field": "Microsoft.ContainerRegistry/registries/privateEndpointConnections[*]",
             "where": {
-              "field": "Microsoft.ContainerRegistry/registries/privateEndpointConnections[*].privateLinkServiceConnectionState.status",
-              "equals": "Approved"
+              "field": "Microsoft.ContainerRegistry/registries/privateEndpointConnections[*].id",
+              "exists": true
             }
           },
           "less": 1
