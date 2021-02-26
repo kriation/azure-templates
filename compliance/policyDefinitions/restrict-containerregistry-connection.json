@@ -8,14 +8,8 @@
           "equals": "Microsoft.ContainerRegistry/registries"
         },
         {
-          "count": {
-            "field": "Microsoft.ContainerRegistry/registries/privateEndpointConnections[*]",
-            "where": {
-              "field": "Microsoft.ContainerRegistry/registries/privateEndpointConnections[*].id",
-              "exists": true
-            }
-          },
-          "less": 1
+          "field": "Microsoft.ContainerRegistry/registries/publicNetworkAccess",
+          "notEquals": "Disabled"
         }
       ]
     },
